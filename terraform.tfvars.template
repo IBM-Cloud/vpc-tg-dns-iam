@@ -1,7 +1,9 @@
-# sym link this files into each of the team directories
+# In the github repository this file is symbolically linked into each each of the team directories
+# On architectures that do not support symbolic links it might be required to manually copy this file
 
 ssh_key_name = "REPLACE_IN_terrform_tfvars" # must replace with an existing vpc ssh key name 
-basename = "project10" # prefix name for most resources
+basename = "widget0" # prefix name for most resources
 ibm_region = "us-south"
 
+transit_gateway = false # true to inject a transit gateway to connect the VPCs
 shared_lb = false # true to inject a vpc load balancer over the shared app
