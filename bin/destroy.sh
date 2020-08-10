@@ -1,5 +1,7 @@
 #!/bin/bash
 set -ex
-for d in application1 shared network admin; do
-  (cd $d; source ./local.env; terraform destroy -auto-approve)
+for d in application2 application1 shared network admin; do
+  if [ -d $d ]; then
+    (cd $d && source ./local.env && terraform destroy -auto-approve && rm local.env)
+  fi
 done

@@ -15,30 +15,30 @@ output shared {
   }
 }
 
-output app1 {
+output application1 {
   value = {
-    vpc                                  = module.vpc_app1.vpc
-    subnets                              = module.vpc_app1.subnets
-    security_group_ssh                   = module.sg_app1.security_group_ssh
-    security_group_install_software      = module.sg_app1.security_group_install_software
-    security_group_data_inbound          = module.sg_app1.security_group_data_inbound
-    security_group_data_inbound_insecure = module.sg_app1.security_group_data_inbound_insecure
-    security_group_data_outbound         = module.sg_app1.security_group_data_outbound
-    security_group_ibm_dns               = module.sg_app1.security_group_ibm_dns
-    security_group_outbound_all          = module.sg_app1.security_group_outbound_all
+    vpc                                  = module.vpc_application1.vpc
+    subnets                              = module.vpc_application1.subnets
+    security_group_ssh                   = module.sg_application1.security_group_ssh
+    security_group_install_software      = module.sg_application1.security_group_install_software
+    security_group_data_inbound          = module.sg_application1.security_group_data_inbound
+    security_group_data_inbound_insecure = module.sg_application1.security_group_data_inbound_insecure
+    security_group_data_outbound         = module.sg_application1.security_group_data_outbound
+    security_group_ibm_dns               = module.sg_application1.security_group_ibm_dns
+    security_group_outbound_all          = module.sg_application1.security_group_outbound_all
   }
 }
 
-output app2 {
+output application2 {
   value = {
-    vpc                                  = module.vpc_app2.vpc
-    subnets                              = module.vpc_app2.subnets
-    security_group_ssh                   = module.sg_app2.security_group_ssh
-    security_group_install_software      = module.sg_app2.security_group_install_software
-    security_group_data_inbound          = module.sg_app2.security_group_data_inbound
-    security_group_data_inbound_insecure = module.sg_app2.security_group_data_inbound_insecure
-    security_group_data_outbound         = module.sg_app2.security_group_data_outbound
-    security_group_ibm_dns               = module.sg_app2.security_group_ibm_dns
-    security_group_outbound_all          = module.sg_app2.security_group_outbound_all
+    vpc                                  = module.vpc_application2.vpc
+    subnets                              = module.vpc_application2.subnets
+    security_group_ssh                   = module.sg_application2.security_group_ssh
+    security_group_install_software      = module.sg_application2.security_group_install_software
+    security_group_data_inbound          = module.sg_application2.security_group_data_inbound
+    security_group_data_inbound_insecure = module.sg_application2.security_group_data_inbound_insecure
+    security_group_data_outbound         = module.sg_application2.security_group_data_outbound
+    security_group_ibm_dns               = module.sg_application2.security_group_ibm_dns
+    security_group_outbound_all          = module.sg_application2.security_group_outbound_all
   }
 }

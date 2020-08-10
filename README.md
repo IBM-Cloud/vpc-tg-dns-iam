@@ -55,7 +55,7 @@ After fetching the source code and making the initial terraform.tfvars changes s
 
 ```
 cd admin
-echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create project10-admin --output json | jq .apikey) > local.env
+echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create widget0-admin --output json | jq .apikey) > local.env
 cat local.env
 source local.env
 terraform apply
@@ -108,7 +108,7 @@ $ curl 169.48.152.220:3000/info
 
 {
   "req_url": "/info",
-  "os_hostname": "project10-app1-vsi",
+  "os_hostname": "widget0-application1-vsi",
   "ipArrays": [
      [
         "10.1.0.4"
@@ -123,7 +123,7 @@ $ curl 169.48.152.220:3000/remote; # get the remote private IP address
   "remote_ip": "10.0.0.4",
   "remote_info": {
      "req_url": "/info",
-     "os_hostname": "project10-shared-vsi",
+     "os_hostname": "widget0-shared-vsi",
      "ipArrays": [
         [
            "10.0.0.4"

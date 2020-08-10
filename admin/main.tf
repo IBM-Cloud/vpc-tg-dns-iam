@@ -22,7 +22,8 @@ resource "ibm_resource_group" "application2" {
   name = "${var.basename}-application2"
 }
 
-# ---------------- access groups and members
+# ---------------- access groups and a service id in each group
+# network
 resource "ibm_iam_access_group" "network" {
   name        = "${var.basename}-network"
   description = "network administrators"
@@ -36,6 +37,7 @@ resource "ibm_iam_access_group_members" "network" {
   iam_service_ids         = [ibm_iam_service_id.network.id]
 }
 
+# shared
 resource "ibm_iam_access_group" "shared" {
   name        = "${var.basename}-shared"
   description = "shared administrators"
@@ -49,6 +51,7 @@ resource "ibm_iam_access_group_members" "shared" {
   iam_service_ids         = [ibm_iam_service_id.shared.id]
 }
 
+# application1
 resource "ibm_iam_access_group" "application1" {
   name        = "${var.basename}-application1"
   description = "application1 administrators"
@@ -62,6 +65,7 @@ resource "ibm_iam_access_group_members" "application1" {
   iam_service_ids         = [ibm_iam_service_id.application1.id]
 }
 
+# application2
 resource "ibm_iam_access_group" "application2" {
   name        = "${var.basename}-application2"
   description = "application2 administrators"
@@ -82,7 +86,6 @@ resource "ibm_iam_access_group_policy" "network_policy" {
   for_each = {network=ibm_resource_group.network.id, application1=ibm_resource_group.application1.id, application2=ibm_resource_group.application2.id, shared=ibm_resource_group.shared.id}
   resources {
     resource_type = "resource-group"
-    # resource      = ibm_resource_group.network.id
     resource      = each.value
   }
 }
@@ -138,7 +141,6 @@ resource "ibm_iam_access_group_policy" "dns_network" {
 
 resource "ibm_iam_access_group_policy" "dns-shared" {
   access_group_id = ibm_iam_access_group.shared.id
- #roles           = ["Reader", "Viewer", "Manager"]
   roles          =            ["Viewer", "Manager"]
 
   resources {
@@ -153,10 +155,10 @@ resource "ibm_iam_access_group_policy" "dns-shared" {
 locals {
   # types of resources that just the network team manage
   is_network_service_types = {
-    "vpnGatewayId"       = "*"
-    "publicGatewayId"    = "*"
-    "flowLogCollectorId" = "*"
     "networkAclId"       = "*"
+    "vpnGatewayId"       = "*" # not in tutorial, included for completeness
+    "publicGatewayId"    = "*" # not in tutorial, included for completeness
+    "flowLogCollectorId" = "*" # not in tutorial, included for completeness
   }
   # types of resources that both the network team and the instance teams manage
   is_network_and_instance_service_types = {
@@ -171,9 +173,9 @@ locals {
     "floatingIpId"    = "*"
     "keyId"           = "*"
     "imageId"         = "*"
-    "instanceGroupId" = "*"
-    "dedicatedHostId" = "*"
     "loadBalancerId"  = "*"
+    "instanceGroupId" = "*" # not in tutorial, included for completeness
+    "dedicatedHostId" = "*" # not in tutorial, included for completeness
   }
 }
 

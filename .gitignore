@@ -5,3 +5,4 @@ terraform.tfstate.lock.info
 *.tfstate.backup
 .terraform*
 crash.log
+application2

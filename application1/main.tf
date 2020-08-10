@@ -30,11 +30,11 @@ module user_data_app {
 }
 
 locals {
-  network_context = data.terraform_remote_state.network.outputs.app1
+  network_context = data.terraform_remote_state.network.outputs.application1
 }
 
-resource ibm_is_instance "vsiapp1" {
-  name           = "${var.basename}-app1-vsi"
+resource ibm_is_instance "vsiapplication1" {
+  name           = "${var.basename}-application1-vsi"
   vpc            = local.network_context.vpc.id
   resource_group = data.ibm_resource_group.application1.id
   zone           = local.network_context.subnets["z1"].zone
@@ -55,27 +55,27 @@ resource ibm_is_instance "vsiapp1" {
   user_data = module.user_data_app.user_data_centos
 }
 
-resource ibm_is_floating_ip "vsiapp1" {
+resource ibm_is_floating_ip "vsiapplication1" {
   resource_group = data.ibm_resource_group.application1.id
-  name           = "${var.basename}-vsiapp1"
-  target         = ibm_is_instance.vsiapp1.primary_network_interface[0].id
+  name           = "${var.basename}-vsiapplication1"
+  target         = ibm_is_instance.vsiapplication1.primary_network_interface[0].id
 }
 
 #-------------------------------------------------------------------
 output ibm1_public_ip {
-  value = ibm_is_floating_ip.vsiapp1.address
+  value = ibm_is_floating_ip.vsiapplication1.address
 }
 
 output ibm1_private_ip {
-  value = ibm_is_instance.vsiapp1.primary_network_interface[0].primary_ipv4_address
+  value = ibm_is_instance.vsiapplication1.primary_network_interface[0].primary_ipv4_address
 }
 
 output ibm1_curl {
   value = <<EOS
 
-ssh root@${ibm_is_floating_ip.vsiapp1.address}
-curl ${ibm_is_floating_ip.vsiapp1.address}:3000; # get hello world string
-curl ${ibm_is_floating_ip.vsiapp1.address}:3000/info; # get the private IP address
-curl ${ibm_is_floating_ip.vsiapp1.address}:3000/remote; # get the remote private IP address
+ssh root@${ibm_is_floating_ip.vsiapplication1.address}
+curl ${ibm_is_floating_ip.vsiapplication1.address}:3000; # get hello world string
+curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/info; # get the private IP address
+curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/remote; # get the remote private IP address
 EOS
 }

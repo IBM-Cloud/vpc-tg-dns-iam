@@ -1,8 +1,15 @@
+terraform {
+  required_providers {
+    ibm = ">= 1.10.0"
+  }
+}
+
 variable ibmcloud_api_key {}
 variable ssh_key_name {}
 variable basename {}
 variable ibm_region {}
 variable shared_lb {}
+variable transit_gateway {}
 
 # vpc generation 1 not supported at this time, leave at 2
 variable generation {
