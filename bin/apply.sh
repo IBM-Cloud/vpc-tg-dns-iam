@@ -1,36 +1,87 @@
 #!/bin/bash
 set -ex
 
-# create the application2 team from the application1 team
-if ! [ -d application2 ]; then
-(
-  cd application1
-  mkdir ../application2
-  sed -e 's/application1/application2/g' main.tf > ../application2/main.tf
-  cp terraform.tfvars variables.tf ../application2
-)
-fi
+basename='undefined'
+function create_application2_from_application1 {
+  (
+    cd application1
+    mkdir -p ../application2
+    sed -e 's/application1/application2/g' main.tf > ../application2/main.tf
+    cp terraform.tfvars variables.tf ../application2
+  )
+}
+function initialize_basename {
+  # get the basename from the terraform configuration file
+  eval $(grep basename terraform.tfvars | sed -e 's/  *//g' -e 's/#.*//')
+  echo basename=$basename
+}
+function admin_local_env {
+  (
+    cd admin
+    [ -e local.env ] || echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create $basename-admin --output json | jq .apikey) > local.env
+  )
+}
+function terraform_init_apply {
+  source ./local.env
+  terraform init
+  terraform apply -auto-approve -no-color
+}
+function team_local_env {
+  team=$1
+  [ -e local.env ] || echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam service-api-key-create $team $basename-$team --output json | jq .apikey) > local.env
+}
+function terraform_apply {
+  source ./local.env
+  terraform apply -auto-approve -no-color
+}
+function test_local_endpoint {
+  (
+    cd application1
+    terraform output
+    eval $(terraform output test_info)
+  )
+}
+function test_local_and_remote {
+  (
+    cd application1
+    terraform output
+    eval $(terraform output test_info)
+    eval $(terraform output test_remote)
+  )
+}
 
-# get the basename from the terraform configuration file
-eval $(grep basename terraform.tfvars | sed -e 's/  *//g' -e 's/#.*//')
-echo basename=$basename
 
-# terraform the admin team
+##################################################
+create_application2_from_application1
+initialize_basename
+admin_local_env
 (
   cd admin
-  [ -e local.env ] || echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create $basename-admin --output json | jq .apikey) > local.env
-  source local.env
-  terraform init
-  terraform apply -auto-approve
+  terraform_init_apply
 )
-
-# terraform the rest of the teams - all teams except the admin team
 for team in admin network shared application1 application2; do
   (
-    cd $team
-    [ -e local.env ] || echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam service-api-key-create $team $basename-$team --output json | jq .apikey) > local.env
-    source ./local.env
-    terraform init
-    terraform apply -auto-approve
+  cd $team
+  team_local_env $team
+  terraform_init_apply
   )
 done
+test_local_endpoint
+  
+# turn on transit gateway and build network again
+team=network
+(
+  export TF_VAR_transit_gateway=true
+  cd $team
+  terraform_apply
+)
+test_local_and_remote
+
+# turn on load balancer and build shared again
+team=shared
+(
+  export TF_VAR_shared_lb=true
+  cd $team
+  terraform_apply
+)
+test_local_and_remote

@@ -70,12 +70,12 @@ output ibm1_private_ip {
   value = ibm_is_instance.vsiapplication1.primary_network_interface[0].primary_ipv4_address
 }
 
-output ibm1_curl {
-  value = <<EOS
-
-ssh root@${ibm_is_floating_ip.vsiapplication1.address}
-curl ${ibm_is_floating_ip.vsiapplication1.address}:3000; # get hello world string
-curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/info; # get the private IP address
-curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/remote; # get the remote private IP address
-EOS
+output test_info {
+  value="curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/info"
+}
+output test_remote {
+  value="curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/remote"
+}
+output ssh {
+  value="ssh root@${ibm_is_floating_ip.vsiapplication1.address}"
 }

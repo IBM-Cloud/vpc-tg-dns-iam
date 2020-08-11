@@ -8,8 +8,12 @@ variable ibmcloud_api_key {}
 variable ssh_key_name {}
 variable basename {}
 variable ibm_region {}
-variable shared_lb {}
-variable transit_gateway {}
+variable transit_gateway {
+  default = false
+}
+variable shared_lb {
+  default = false
+}
 
 # vpc generation 1 not supported at this time, leave at 2
 variable generation {
