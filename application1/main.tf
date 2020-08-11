@@ -71,11 +71,11 @@ output ibm1_private_ip {
 }
 
 output test_info {
-  value="curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/info"
+  value = "curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/info"
 }
 output test_remote {
-  value="curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/remote"
+  value = "curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/remote"
 }
 output ssh {
-  value="ssh root@${ibm_is_floating_ip.vsiapplication1.address}"
+  value = "ssh root@${ibm_is_floating_ip.vsiapplication1.address}"
 }

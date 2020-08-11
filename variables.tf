@@ -20,14 +20,14 @@ variable generation {
   default = 2
 }
 variable profile {
-    default = {
+  default = {
     "1" = "cc1-2x4"
     "2" = "cx2-2x4"
-    }
+  }
 }
 variable centos_minimal {
-    default = {
+  default = {
     "1" = "ibm-centos-7-6-minimal-amd64-1"
     "2" = "ibm-centos-7-6-minimal-amd64-2"
-    }
+  }
 }

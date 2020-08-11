@@ -5,7 +5,7 @@ provider "ibm" {
 }
 
 output basename {
-    value = var.basename
+  value = var.basename
 }
 
 # ---------------- resource groups
@@ -34,7 +34,7 @@ resource "ibm_iam_service_id" "network" {
 }
 resource "ibm_iam_access_group_members" "network" {
   access_group_id = ibm_iam_access_group.network.id
-  iam_service_ids         = [ibm_iam_service_id.network.id]
+  iam_service_ids = [ibm_iam_service_id.network.id]
 }
 
 # shared
@@ -48,7 +48,7 @@ resource "ibm_iam_service_id" "shared" {
 }
 resource "ibm_iam_access_group_members" "shared" {
   access_group_id = ibm_iam_access_group.shared.id
-  iam_service_ids         = [ibm_iam_service_id.shared.id]
+  iam_service_ids = [ibm_iam_service_id.shared.id]
 }
 
 # application1
@@ -62,7 +62,7 @@ resource "ibm_iam_service_id" "application1" {
 }
 resource "ibm_iam_access_group_members" "application1" {
   access_group_id = ibm_iam_access_group.application1.id
-  iam_service_ids         = [ibm_iam_service_id.application1.id]
+  iam_service_ids = [ibm_iam_service_id.application1.id]
 }
 
 # application2
@@ -76,14 +76,14 @@ resource "ibm_iam_service_id" "application2" {
 }
 resource "ibm_iam_access_group_members" "application2" {
   access_group_id = ibm_iam_access_group.application2.id
-  iam_service_ids         = [ibm_iam_service_id.application2.id]
+  iam_service_ids = [ibm_iam_service_id.application2.id]
 }
 
 # ---------------- viewer access to resource groups
 resource "ibm_iam_access_group_policy" "network_policy" {
   access_group_id = ibm_iam_access_group.network.id
   roles           = ["Viewer"]
-  for_each = {network=ibm_resource_group.network.id, application1=ibm_resource_group.application1.id, application2=ibm_resource_group.application2.id, shared=ibm_resource_group.shared.id}
+  for_each        = { network = ibm_resource_group.network.id, application1 = ibm_resource_group.application1.id, application2 = ibm_resource_group.application2.id, shared = ibm_resource_group.shared.id }
   resources {
     resource_type = "resource-group"
     resource      = each.value
@@ -141,7 +141,7 @@ resource "ibm_iam_access_group_policy" "dns_network" {
 
 resource "ibm_iam_access_group_policy" "dns-shared" {
   access_group_id = ibm_iam_access_group.shared.id
-  roles          =            ["Viewer", "Manager"]
+  roles           = ["Viewer", "Manager"]
 
   resources {
     service           = "dns-svcs"
@@ -307,7 +307,7 @@ data ibm_is_ssh_key "ssh_key" {
   name = var.ssh_key_name
 }
 resource "ibm_iam_access_group_policy" "shared_is_key_pfq" {
-  for_each = {shared=ibm_iam_access_group.shared.id, application1=ibm_iam_access_group.application1.id, application2=ibm_iam_access_group.application2.id}
+  for_each        = { shared = ibm_iam_access_group.shared.id, application1 = ibm_iam_access_group.application1.id, application2 = ibm_iam_access_group.application2.id }
   access_group_id = each.value
   roles           = ["Operator"]
 

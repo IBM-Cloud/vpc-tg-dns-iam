@@ -103,32 +103,32 @@ resource "ibm_dns_permitted_network" "application2" {
   type        = "vpc"
 }
 
-resource "ibm_tg_gateway" "tgw"{
-  count = var.transit_gateway ? 1 : 0
-  name              = "${var.basename}-tgw"
-  location          = var.ibm_region
-  global            = false
-  resource_group    = data.ibm_resource_group.network.id
-} 
+resource "ibm_tg_gateway" "tgw" {
+  count          = var.transit_gateway ? 1 : 0
+  name           = "${var.basename}-tgw"
+  location       = var.ibm_region
+  global         = false
+  resource_group = data.ibm_resource_group.network.id
+}
 
-resource "ibm_tg_connection" "shared"{
-  count = var.transit_gateway ? 1 : 0
+resource "ibm_tg_connection" "shared" {
+  count        = var.transit_gateway ? 1 : 0
   network_type = "vpc"
-  gateway = ibm_tg_gateway.tgw[0].id
-  name              = "${var.basename}-shared"
-  network_id = module.vpc_shared.vpc.resource_crn
+  gateway      = ibm_tg_gateway.tgw[0].id
+  name         = "${var.basename}-shared"
+  network_id   = module.vpc_shared.vpc.resource_crn
 }
-resource "ibm_tg_connection" "application1"{
-  count = var.transit_gateway ? 1 : 0
+resource "ibm_tg_connection" "application1" {
+  count        = var.transit_gateway ? 1 : 0
   network_type = "vpc"
-  gateway = ibm_tg_gateway.tgw[0].id
-  name              = "${var.basename}-application1"
-  network_id = module.vpc_application1.vpc.resource_crn
+  gateway      = ibm_tg_gateway.tgw[0].id
+  name         = "${var.basename}-application1"
+  network_id   = module.vpc_application1.vpc.resource_crn
 }
-resource "ibm_tg_connection" "application2"{
-  count = var.transit_gateway ? 1 : 0
+resource "ibm_tg_connection" "application2" {
+  count        = var.transit_gateway ? 1 : 0
   network_type = "vpc"
-  gateway = ibm_tg_gateway.tgw[0].id
-  name              = "${var.basename}-application2"
-  network_id = module.vpc_application2.vpc.resource_crn
+  gateway      = ibm_tg_gateway.tgw[0].id
+  name         = "${var.basename}-application2"
+  network_id   = module.vpc_application2.vpc.resource_crn
 }

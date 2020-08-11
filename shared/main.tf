@@ -56,7 +56,7 @@ resource ibm_is_instance "vsishared" {
 #-------------------------------------------------------------------
 # shared.widgets.com
 resource ibm_dns_resource_record "shared" {
-  count = var.shared_lb ? 0 : 1 # shared load balancer?
+  count       = var.shared_lb ? 0 : 1 # shared load balancer?
   instance_id = local.network_context.dns.guid
   zone_id     = local.network_context.dns.zone_id
   type        = "A"
