@@ -5,5 +5,5 @@ ssh_key_name = "REPLACE_IN_terrform_tfvars" # must replace with an existing vpc 
 basename = "widget0" # prefix name for most resources
 ibm_region = "us-south"
 
-transit_gateway = false # true to inject a transit gateway to connect the VPCs
-shared_lb = false # true to inject a vpc load balancer over the shared app
+# transit_gateway = true # true to inject a transit gateway to connect the VPCs
+# shared_lb = true # true to inject a vpc load balancer over the shared app
