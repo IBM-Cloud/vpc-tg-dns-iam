@@ -84,7 +84,6 @@ output ibm1_curl {
   value = <<EOS
 
 Verify these do not work:
-ssh root@${ibm_is_floating_ip.vsishared.address}
 curl ${ibm_is_floating_ip.vsishared.address}:3000; # get hello world string
 curl ${ibm_is_floating_ip.vsishared.address}:3000/info; # get the private IP address
 EOS

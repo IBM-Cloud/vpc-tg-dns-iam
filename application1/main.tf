@@ -76,6 +76,3 @@ output test_info {
 output test_remote {
   value = "curl ${ibm_is_floating_ip.vsiapplication1.address}:3000/remote"
 }
-output ssh {
-  value = "ssh root@${ibm_is_floating_ip.vsiapplication1.address}"
-}

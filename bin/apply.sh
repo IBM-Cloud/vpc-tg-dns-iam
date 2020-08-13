@@ -37,6 +37,7 @@ function terraform_apply {
 function test_local_endpoint {
   (
     cd application1
+    source ./local.env
     terraform output
     eval $(terraform output test_info)
   )
@@ -44,12 +45,12 @@ function test_local_endpoint {
 function test_local_and_remote {
   (
     cd application1
+    source ./local.env
     terraform output
     eval $(terraform output test_info)
     eval $(terraform output test_remote)
   )
 }
-
 
 ##################################################
 create_application2_from_application1
