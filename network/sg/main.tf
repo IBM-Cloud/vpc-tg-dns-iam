@@ -1,12 +1,12 @@
-variable basename { }
-variable vpc { }
-variable cidr_remote { }
-variable resource_group { }
+variable basename {}
+variable vpc {}
+variable cidr_remote {}
+variable resource_group {}
 
 resource "ibm_is_security_group" "ssh" {
-  name = "${var.basename}-ssh"
+  name           = "${var.basename}-ssh"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 resource "ibm_is_security_group_rule" "ssh" {
   group     = ibm_is_security_group.ssh.id
@@ -20,9 +20,9 @@ resource "ibm_is_security_group_rule" "ssh" {
 
 #-----------------------------------------------------
 resource "ibm_is_security_group" "install_software" {
-  name = "${var.basename}-install-software"
+  name           = "${var.basename}-install-software"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 
 resource "ibm_is_security_group_rule" "egress_443_all" {
@@ -68,9 +68,9 @@ resource "ibm_is_security_group_rule" "egress_dns_udp_11" {
 
 #-----------------------------------------------------
 resource "ibm_is_security_group" "data_inbound" {
-  name = "${var.basename}-data-inbound"
+  name           = "${var.basename}-data-inbound"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 
 resource "ibm_is_security_group_rule" "shared_ingress_all" {
@@ -85,9 +85,9 @@ resource "ibm_is_security_group_rule" "shared_ingress_all" {
 
 #-----------------------------------------------------
 resource "ibm_is_security_group" "data_inbound_insecure" {
-  name = "${var.basename}-datain-insecure"
+  name           = "${var.basename}-datain-insecure"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 
 resource "ibm_is_security_group_rule" "shared_ingress_all_insecure" {
@@ -104,9 +104,9 @@ resource "ibm_is_security_group_rule" "shared_ingress_all_insecure" {
 #-----------------------------------------------------
 # vsi1/app needs access to vsi2/app
 resource "ibm_is_security_group" "data_outbound" {
-  name = "${var.basename}-data-outbound"
+  name           = "${var.basename}-data-outbound"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 
 resource "ibm_is_security_group_rule" "application_egress_app_all" {
@@ -121,9 +121,9 @@ resource "ibm_is_security_group_rule" "application_egress_app_all" {
 
 #-----------------------------------------------------
 resource "ibm_is_security_group" "ibm_dns" {
-  name = "${var.basename}-ibm-dns"
+  name           = "${var.basename}-ibm-dns"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 resource "ibm_is_security_group_rule" "outbound_dns_udp_7" {
   group     = ibm_is_security_group.ibm_dns.id
@@ -146,9 +146,9 @@ resource "ibm_is_security_group_rule" "outbound_dns_udp_8" {
 
 #-----------------------------------------------------
 resource "ibm_is_security_group" "outbound_all" {
-  name = "${var.basename}-outbound-all"
+  name           = "${var.basename}-outbound-all"
   resource_group = var.resource_group.id
-  vpc  = var.vpc.id
+  vpc            = var.vpc.id
 }
 resource "ibm_is_security_group_rule" "outbound_all" {
   group     = ibm_is_security_group.outbound_all.id
