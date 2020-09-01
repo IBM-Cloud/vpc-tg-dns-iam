@@ -43,7 +43,7 @@ module "vpc_application1" {
 }
 module "sg_application1" {
   source         = "./sg"
-  basename       = "${var.basename}-sg-application1"
+  basename       = "${var.basename}-app1"
   vpc            = module.vpc_application1.vpc
   resource_group = data.ibm_resource_group.application1
   cidr_remote    = var.network_architecture.application1.cidr_remote
@@ -58,7 +58,7 @@ module "vpc_application2" {
 }
 module "sg_application2" {
   source         = "./sg"
-  basename       = "${var.basename}-sg-application2"
+  basename       = "${var.basename}-app2"
   vpc            = module.vpc_application2.vpc
   resource_group = data.ibm_resource_group.application2
   cidr_remote    = var.network_architecture.application2.cidr_remote
