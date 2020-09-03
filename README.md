@@ -1,5 +1,5 @@
 # VPCs with Transit Gateway and DNS Services
-This is the companion github repository for the solution tutorial https://test.cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-tg-dns-iam
+This is the companion github repository for the solution tutorial https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-tg-dns-iam
 
 This repository: https://github.com/powellquiring/vpc-tg-dns-iam
 
