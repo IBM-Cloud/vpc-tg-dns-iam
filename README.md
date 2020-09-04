@@ -6,6 +6,7 @@ This repository: https://github.com/powellquiring/vpc-tg-dns-iam
 This tutorial walks you through creating the account resource groups and IAM access groups to organize independent devops teams to develop and maintain applications.  Each devop team administers the VPC instances, VSIs, but not the static network infrastructure like the creation of CIDR blocks and subnets.  The VPCs are connected by Transit Gateways.  The shared devops team has a service **shared.widgets.com** that is put into the DNS service.
 
 # TLDR;
+There is an apply.sh shell script that will simply perform all of the steps in the tutorial.  There is a destroy.sh shell script that destroys all of the resources.
 
 ```
 git clone https://github.com/powellquiring/vpc-tg-dns-iam
@@ -25,20 +26,6 @@ Team structure
 - Shared team deploys VSIs and software on the VSIs and configures it's DNS names
 - Application team deploys VSIs and software on the VSIs
 
-``` mermaid
-graph LR;
-  Shared --Editor--> Instance[[IS Instance Service Types]];
-  Shared --Operator--> InstanceNetwork[[IS Network/Instance Service Types]];
-  Network --Editor--> InstanceNetwork;
-  Network --Editor--> NetworkResources[IS Network Service Types];
-```
-
-``` mermaid
-graph LR;
-  Network --Editor--> dns-transit[[Transit Gateway]]
-  Network --Editor/Manager--> dns-svcs[[DNS]]
-  Shared --Manager--> dns-svcs[[DNS]]
-```
 
 # Becoming a team member
 If you did not run the complete `./bin/apply.sh` you can do it for each team individually.
@@ -49,16 +36,23 @@ export TF_VAR_ibmcloud_api_key=0thisIsNotARealKeyALX0vkLNSUFC7rMLEWYpVtyZaS9
 ```
 When you cd into a directory you will be reminded to execute: `source local.env`
 
+## Getting Started
+Edit the terraform.tfvars file used by all of the teams, initialize the basename shell variable to match the terraform.tfvars file.
+```
+cp terraform.tfvars.template terraform.tfvars
+edit terraform.tfvars
+eval $(grep basename terraform.tfvars | sed -e 's/  *//g' -e 's/#.*//')
+echo basename=$basename
+```
 ## Admin Team
 
 After fetching the source code and making the initial terraform.tfvars changes suggested above set current directory to ./admin and use the `ibmcloud iam api-key-create` command to create an api key for the admin.  This is the same as a password to your account and it will be used by terraform to perform tasks on your behalf.  Keep the api key safe.
 
 ```
 cd admin
-echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create widget0-admin --output json | jq .apikey) > local.env
+echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create $basename-admin --output json | jq .apikey) > local.env
 cat local.env
 source local.env
-terraform apply
 ```
 ## Shared Team
 Change directory, generate an API key in the local.env and become a member of the shared access group:
