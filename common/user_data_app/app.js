@@ -4,9 +4,10 @@ const port = process.env.PORT || 3000;
 
 const IP='REMOTE_IP'
 
-function getRemote(req, res) {
+function getRemote(req, res, ip) {
   path = '/info'
-  remote_url = 'http://' + IP + ':3000' + path
+  remote_url = 'http://' + ip + ':3000' + path
+  console.log(remote_url)
   http.get(remote_url, (resp) => {
     let rawData = '';
     resp.on('data', (chunk) => { rawData += chunk; });
@@ -57,11 +58,16 @@ const server = http.createServer((req, res) => {
     }, null, 3));
     break
   case '/remote':
-    getRemote(req, res)
+    getRemote(req, res, IP)
     break
   default:
-    res.statusCode = 200;
-    res.end(JSON.stringify({hello: "world"}, null, 3))
+    sremotes = '/remote/'
+    if (req.url.startsWith(sremotes)) {
+      getRemote(req, res, req.url.slice(sremotes.length))
+    } else {
+      res.statusCode = 200;
+      res.end(JSON.stringify({hello: "world"}, null, 3))
+    }
     break
   }
 });

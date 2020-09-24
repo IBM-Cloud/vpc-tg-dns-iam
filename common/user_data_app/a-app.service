@@ -5,7 +5,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node /app.js
+ExecStart=NODE /app.js
 Restart=on-failure
 
 [Install]
