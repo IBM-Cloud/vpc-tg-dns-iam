@@ -1,13 +1,15 @@
 #!/bin/bash
 set -ex
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 basename='undefined'
 function create_application2_from_application1 {
   (
     cd application1
     mkdir -p ../application2
     sed -e 's/application1/application2/g' main.tf > ../application2/main.tf
-    cp terraform.tfvars variables.tf ../application2
+    cp terraform.tfvars variables.tf versions.tf ../application2
   )
 }
 function initialize_basename {
@@ -60,6 +62,7 @@ admin_local_env
   cd admin
   terraform_init_apply
 )
+$DIR/smapikeys.sh; # use secrets manager to create the supported api keys
 for team in admin network shared application1 application2; do
   (
   cd $team

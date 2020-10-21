@@ -1,9 +1,3 @@
-terraform {
-  required_providers {
-    ibm = ">= 1.10.0"
-  }
-}
-
 variable ibmcloud_api_key {}
 variable ssh_key_name {}
 variable basename {}
