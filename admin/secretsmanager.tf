@@ -40,7 +40,19 @@ locals {
 }
 
 
+
 # ---------------- network
+# to vault login the network team member needs Viewer platform access and Reader service access to your Secrets Manager instance.
+resource "ibm_iam_access_group_policy" "network_vault_login" {
+  access_group_id = ibm_iam_access_group.network_admin.id
+  roles           = ["Viewer", "Reader"]
+  resources {
+    service           = "secrets-manager"
+    resource_instance_id = ibm_resource_instance.secrets_manager.guid
+  }
+}
+
+# the network_admin resource group has access to the secret group
 resource "ibm_iam_access_group" "network_admin" {
   name        = "${var.basename}-network-admin"
   description = "network_admin administrators"
