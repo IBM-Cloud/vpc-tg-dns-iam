@@ -188,7 +188,7 @@ resource "ibm_iam_access_group_policy" "networkshared_is_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.shared.id
   }
@@ -201,7 +201,7 @@ resource "ibm_iam_access_group_policy" "networkapplication1_is_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.application1.id
   }
@@ -214,7 +214,7 @@ resource "ibm_iam_access_group_policy" "networkapplication2_is_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.application2.id
   }
@@ -228,7 +228,7 @@ resource "ibm_iam_access_group_policy" "shared_is_network_operator_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.shared.id
   }
@@ -241,7 +241,7 @@ resource "ibm_iam_access_group_policy" "shared_is_instance_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.shared.id
   }
@@ -255,7 +255,7 @@ resource "ibm_iam_access_group_policy" "application1_is_network_operator_resourc
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.application1.id
   }
@@ -268,7 +268,7 @@ resource "ibm_iam_access_group_policy" "application1_is_instance_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.application1.id
   }
@@ -282,7 +282,7 @@ resource "ibm_iam_access_group_policy" "application2_is_network_operator_resourc
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.application2.id
   }
@@ -295,7 +295,7 @@ resource "ibm_iam_access_group_policy" "application2_is_instance_resources" {
   resources {
     service = "is"
     attributes = {
-      "${each.key}" = each.value
+      (each.key) = each.value
     }
     resource_group_id = ibm_resource_group.application2.id
   }

@@ -41,9 +41,8 @@ EOS
 }
 
 output user_data_centos {
-  value = "${replace(local.shared_app_user_data_centos, "REMOTE_IP", var.remote_ip)}"
+  value = replace(local.shared_app_user_data_centos, "REMOTE_IP", var.remote_ip)
 }
 output user_data_awslinux2 {
-  value = "${replace(local.shared_app_user_data_awslinux2, "REMOTE_IP", var.remote_ip)}"
+  value = replace(local.shared_app_user_data_awslinux2, "REMOTE_IP", var.remote_ip)
 }
-
