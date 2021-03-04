@@ -9,10 +9,6 @@ variable remote_ip {}
 locals {
   shared_app_user_data_centos = <<-EOS
     #!/bin/sh
-    cat > /etc/dhcp/dhclient.conf <<EOF
-    supersede domain-name-servers 161.26.0.7, 161.26.0.8';
-    EOF
-    dhclient -v -r eth0; dhclient -v eth0
     curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
     yum install nodejs -y
     cat > /app.js << 'EOF'
