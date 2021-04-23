@@ -1,7 +1,6 @@
 provider ibm {
   ibmcloud_api_key = var.ibmcloud_api_key
   region           = var.ibm_region
-  generation       = var.generation
 }
 
 data terraform_remote_state "network" {
@@ -20,8 +19,8 @@ data ibm_is_ssh_key "ssh_key" {
 }
 
 data ibm_is_image "image" {
-  # name = var.ubuntu1804[var.generation]
-  name = var.centos_minimal[var.generation]
+  # name = var.ubuntu1804
+  name = var.centos_minimal
 }
 
 module user_data_app {
@@ -40,7 +39,7 @@ resource ibm_is_instance "vsishared" {
   zone           = local.network_context.subnets["z1"].zone
   keys           = [data.ibm_is_ssh_key.ssh_key.id]
   image          = data.ibm_is_image.image.id
-  profile        = var.profile[var.generation]
+  profile        = var.profile
 
   primary_network_interface {
     subnet = local.network_context.subnets["z1"].id

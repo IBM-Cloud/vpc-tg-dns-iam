@@ -1,7 +1,6 @@
 provider "ibm" {
   region           = var.ibm_region
   ibmcloud_api_key = var.ibmcloud_api_key
-  generation       = var.generation
 }
 
 data "ibm_resource_group" "network" {

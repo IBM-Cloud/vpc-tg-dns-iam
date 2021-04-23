@@ -9,19 +9,9 @@ variable shared_lb {
   default = false
 }
 
-# vpc generation 1 not supported at this time, leave at 2
-variable generation {
-  default = 2
-}
 variable profile {
-  default = {
-    "1" = "cc1-2x4"
-    "2" = "cx2-2x4"
-  }
+  default = "cx2-2x4"
 }
 variable centos_minimal {
-  default = {
-    "1" = "ibm-centos-7-6-minimal-amd64-1"
-    "2" = "ibm-centos-7-6-minimal-amd64-2"
-  }
+  default = "ibm-centos-7-6-minimal-amd64-2"
 }
