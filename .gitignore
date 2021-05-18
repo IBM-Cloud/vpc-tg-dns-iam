@@ -3,6 +3,6 @@ terraform.tfvars
 terraform.tfstate.lock.info
 *.tfstate
 *.tfstate.backup
-.terraform*
+.terraform
 crash.log
 application2
