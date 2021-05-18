@@ -39,7 +39,7 @@ resource ibm_is_instance "vsiapplication1" {
   zone           = local.network_context.subnets["z1"].zone
   keys           = [data.ibm_is_ssh_key.ssh_key.id]
   image          = data.ibm_is_image.image.id
-  profile        = var.profile[var.generation]
+  profile        = var.profile
 
   primary_network_interface {
     subnet = local.network_context.subnets["z1"].id

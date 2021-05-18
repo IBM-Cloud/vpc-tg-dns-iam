@@ -1,7 +1,7 @@
 # VPCs with Transit Gateway and DNS Services
 This is the companion github repository for the solution tutorial https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-tg-dns-iam
 
-This repository: https://github.com/powellquiring/vpc-tg-dns-iam
+This repository: https://github.com/IBM-Cloud/vpc-tg-dns-iam
 
 This tutorial walks you through creating the account resource groups and IAM access groups to organize independent devops teams to develop and maintain applications.  Each devop team administers the VPC instances, VSIs, but not the static network infrastructure like the creation of CIDR blocks and subnets.  The VPCs are connected by Transit Gateways.  The shared devops team has a service **shared.widgets.com** that is put into the DNS service.
 
@@ -9,10 +9,11 @@ This tutorial walks you through creating the account resource groups and IAM acc
 There is an apply.sh shell script that will simply perform all of the steps in the tutorial.  There is a destroy.sh shell script that destroys all of the resources.
 
 ```
-git clone https://github.com/powellquiring/vpc-tg-dns-iam
+git clone https://github.com/IBM-Cloud/vpc-tg-dns-iam
 cd vpc-tg-dns-iam
 cp terraform.tfvars.template terraform.tfvars
 edit terraform.tfvars
+ibmcloud login; # login using credentials or apikey
 ./bin/apply.sh
 # test it out
 ./bin/destroy.sh

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 basename='undefined'
 function create_application2_from_application1 {
@@ -7,13 +7,15 @@ function create_application2_from_application1 {
     cd application1
     mkdir -p ../application2
     sed -e 's/application1/application2/g' main.tf > ../application2/main.tf
-    cp terraform.tfvars variables.tf ../application2
+    cp .terraform.lock.hcl terraform.tfvars variables.tf versions.tf ../application2
   )
 }
-function initialize_basename {
+function initialize_basename_region {
   # get the basename from the terraform configuration file
   eval $(grep basename terraform.tfvars | sed -e 's/  *//g' -e 's/#.*//')
   echo basename=$basename
+  eval $(grep ibm_region terraform.tfvars | sed -e 's/  *//g' -e 's/#.*//')
+  echo ibm_region=$ibm_region
 }
 function admin_local_env {
   (
@@ -39,7 +41,7 @@ function test_local_endpoint {
     cd application1
     source ./local.env
     terraform output
-    eval $(terraform output test_info)
+    eval $(terraform output -raw test_info)
   )
 }
 function test_local_and_remote {
@@ -47,14 +49,20 @@ function test_local_and_remote {
     cd application1
     source ./local.env
     terraform output
-    eval $(terraform output test_info)
-    eval $(terraform output test_remote)
+    eval $(terraform output -raw test_info)
+    eval $(terraform output -raw test_remote)
   )
 }
 
 ##################################################
 create_application2_from_application1
-initialize_basename
+initialize_basename_region
+if ! ibmcloud target -r $ibm_region; then
+  echo
+  echo This command failed: ibmcloud target -r $ibm_region
+  echo 'Probably not logged in via the cli, ibmcloud login ..., you will need to log in as an administrator of the account'
+  exit 1
+fi
 admin_local_env
 (
   cd admin

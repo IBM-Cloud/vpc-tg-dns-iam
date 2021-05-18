@@ -20,6 +20,10 @@ resource "ibm_is_lb" "shared_lb" {
     local.network_context.subnets["z1"].id,
     local.network_context.subnets["z2"].id,
   ]
+  security_groups = [
+    local.network_context.security_group_data_inbound.id,
+    local.network_context.security_group_data_outbound.id,
+  ]
 }
 
 resource "ibm_is_lb_listener" "shared_lb_listener" {
