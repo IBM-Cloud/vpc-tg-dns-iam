@@ -30,6 +30,8 @@ module user_data_app {
 
 locals {
   network_context = data.terraform_remote_state.network.outputs.shared
+  # instance inbound is directly from the load balancer sg if available otherwise from the cidr block
+  inbound_security_group_data = var.shared_lb ? local.network_context.security_group_data_inbound_from_outbound.id : local.network_context.security_group_data_inbound.id
 }
 
 resource ibm_is_instance "vsishared" {
@@ -46,6 +48,7 @@ resource ibm_is_instance "vsishared" {
     security_groups = [
       local.network_context.security_group_outbound_all.id, # nodejs is not available on an IBM mirror
       local.network_context.security_group_ibm_dns.id,
+      local.inbound_security_group_data,
       local.network_context.security_group_data_inbound.id,
     ]
   }

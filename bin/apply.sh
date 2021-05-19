@@ -36,22 +36,38 @@ function terraform_apply {
   source ./local.env
   terraform apply -auto-approve -no-color
 }
+function test_it {
+  local times=$1
+  local sleep=$2
+  cmd="$3"
+  for i in $(seq $times); do
+    if eval $cmd; then
+      return 0
+    fi
+    sleep $sleep
+  done
+  echo test failed
+  return 1
+}
 function test_local_endpoint {
   (
     cd application1
-    source ./local.env
-    terraform output
-    eval $(terraform output -raw test_info)
+    local cmd="$(terraform output -raw test_info)"
+    echo can this workstation reach application1 instance? $cmd
+    test_it 3 1 "$cmd"
+  )
+}
+function test_remote_endpoint {
+  (
+    cd application1
+    local cmd="$(terraform output -raw test_remote)"
+    echo can application1 instance reach the shared instance? $cmd
+    test_it 3 5 "$cmd"
   )
 }
 function test_local_and_remote {
-  (
-    cd application1
-    source ./local.env
-    terraform output
-    eval $(terraform output -raw test_info)
-    eval $(terraform output -raw test_remote)
-  )
+  test_local_endpoint
+  test_remote_endpoint
 }
 
 ##################################################
@@ -94,3 +110,5 @@ team=shared
   terraform_apply
 )
 test_local_and_remote
+
+echo SUCCESS

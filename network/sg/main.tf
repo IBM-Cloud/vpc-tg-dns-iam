@@ -120,6 +120,39 @@ resource "ibm_is_security_group_rule" "application_egress_app_all" {
 }
 
 #-----------------------------------------------------
+# inbound/outbound data connected to each other
+#-----------------------------------------------------
+resource "ibm_is_security_group" "data_inbound_from_outbound" {
+  name           = "${var.basename}-data-inbound-from-outbound"
+  resource_group = var.resource_group.id
+  vpc            = var.vpc.id
+}
+resource "ibm_is_security_group_rule" "data-inbound-from-outbound" {
+  group     = ibm_is_security_group.data_inbound_from_outbound.id
+  direction = "inbound"
+  remote    = ibm_is_security_group.data_outbound_to_inbound.id
+  tcp {
+    port_min = 3000
+    port_max = 3000
+  }
+}
+#-----------------------------------------------------
+resource "ibm_is_security_group" "data_outbound_to_inbound" {
+  name           = "${var.basename}-data-outbound-to-inbound"
+  resource_group = var.resource_group.id
+  vpc            = var.vpc.id
+}
+resource "ibm_is_security_group_rule" "data-outbound-to-inbound" {
+  group     = ibm_is_security_group.data_outbound_to_inbound.id
+  direction = "outbound"
+  remote    = ibm_is_security_group.data_inbound_from_outbound.id
+  tcp {
+    port_min = 3000
+    port_max = 3000
+  }
+}
+
+#-----------------------------------------------------
 resource "ibm_is_security_group" "ibm_dns" {
   name           = "${var.basename}-ibm-dns"
   resource_group = var.resource_group.id
@@ -179,4 +212,10 @@ output security_group_ibm_dns {
 }
 output security_group_outbound_all {
   value = ibm_is_security_group.outbound_all
+}
+output security_group_data_outbound_to_inbound {
+  value = ibm_is_security_group.data_outbound_to_inbound
+}
+output security_group_data_inbound_from_outbound {
+  value = ibm_is_security_group.data_inbound_from_outbound
 }

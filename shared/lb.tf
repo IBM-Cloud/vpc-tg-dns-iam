@@ -22,7 +22,7 @@ resource "ibm_is_lb" "shared_lb" {
   ]
   security_groups = [
     local.network_context.security_group_data_inbound.id,
-    local.network_context.security_group_data_outbound.id,
+    local.network_context.security_group_data_outbound_to_inbound.id
   ]
 }
 
