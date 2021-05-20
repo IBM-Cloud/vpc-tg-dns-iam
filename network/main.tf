@@ -66,7 +66,7 @@ module "sg_application2" {
 #-------------------------------------------------------------------
 resource "ibm_resource_instance" "dns" {
   name              = "${var.basename}-dns"
-  resource_group_id = data.ibm_resource_group.shared.id
+  resource_group_id = data.ibm_resource_group.network.id
   location          = "global"
   service           = "dns-svcs"
   plan              = "standard-dns"

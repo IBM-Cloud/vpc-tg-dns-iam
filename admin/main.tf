@@ -134,7 +134,7 @@ resource "ibm_iam_access_group_policy" "dns_network" {
 
   resources {
     service           = "dns-svcs"
-    resource_group_id = ibm_resource_group.shared.id
+    resource_group_id = ibm_resource_group.network.id
   }
 }
 
@@ -144,7 +144,7 @@ resource "ibm_iam_access_group_policy" "dns-shared" {
 
   resources {
     service           = "dns-svcs"
-    resource_group_id = ibm_resource_group.shared.id
+    resource_group_id = ibm_resource_group.network.id
   }
 }
 
