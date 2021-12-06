@@ -19,8 +19,7 @@ data ibm_is_ssh_key "ssh_key" {
 }
 
 data ibm_is_image "image" {
-  # name = var.ubuntu1804
-  name = var.centos_minimal
+  name = var.image
 }
 
 module user_data_app {
@@ -52,7 +51,8 @@ resource ibm_is_instance "vsishared" {
       local.network_context.security_group_data_inbound.id,
     ]
   }
-  user_data = module.user_data_app.user_data_centos
+  # user_data = module.user_data_app.user_data_centos
+  user_data = module.user_data_app.user_data_ubuntu
 }
 
 #-------------------------------------------------------------------

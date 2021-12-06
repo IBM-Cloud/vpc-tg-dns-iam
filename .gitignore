@@ -1,6 +1,7 @@
 local.env
 terraform.tfvars
 terraform.tfstate.lock.info
+.terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
 .terraform

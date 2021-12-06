@@ -12,6 +12,10 @@ variable shared_lb {
 variable profile {
   default = "cx2-2x4"
 }
-variable centos_minimal {
-  default = "ibm-centos-7-6-minimal-amd64-2"
+
+# note changing image to a different linux (ubuntu to centos for example) requires changing
+# user_data for the instances as well.  Changing versions of ubuntu will likely work
+variable image {
+  # default = "ibm-centos-7-6-minimal-amd64-2"
+  default = "ibm-ubuntu-20-04-2-minimal-amd64-1"
 }

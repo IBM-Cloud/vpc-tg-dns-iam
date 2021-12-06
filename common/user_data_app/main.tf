@@ -34,6 +34,23 @@ EOS
     systemctl daemon-reload
     systemctl start a-app
 EOS
+
+  shared_app_user_data_ubuntu = <<-EOS
+    #!/bin/bash
+    set -x
+    while ! apt update -y; do
+      sleep 10
+    done
+    apt install -y nodejs
+    cat > /app.js << 'EOF'
+    ${file("${path.module}/app.js")}
+    EOF
+    cat > /lib/systemd/system/a-app.service << 'EOF'
+    ${replace(file("${path.module}/a-app.service"), "NODE", "/bin/node")}
+    EOF
+    systemctl daemon-reload
+    systemctl start a-app
+EOS
 }
 
 output user_data_centos {
@@ -41,4 +58,7 @@ output user_data_centos {
 }
 output user_data_awslinux2 {
   value = replace(local.shared_app_user_data_awslinux2, "REMOTE_IP", var.remote_ip)
+}
+output user_data_ubuntu {
+  value = replace(local.shared_app_user_data_ubuntu, "REMOTE_IP", var.remote_ip)
 }
