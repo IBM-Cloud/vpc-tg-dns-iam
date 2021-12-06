@@ -1,7 +1,7 @@
 # In the github repository this file is symbolically linked into each each of the team directories
 # On architectures that do not support symbolic links it might be required to manually copy this file
 
-ssh_key_name = "REPLACE_IN_terrform_tfvars" # must replace with an existing vpc ssh key name 
+ssh_key_name = "your_ssh_key" # must replace with an existing vpc ssh key name 
 basename = "widget0" # prefix name for most resources
 ibm_region = "us-south"
 
