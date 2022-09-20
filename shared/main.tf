@@ -63,7 +63,7 @@ resource ibm_dns_resource_record "shared" {
   zone_id     = local.network_context.dns.zone_id
   type        = "A"
   name        = "shared"
-  rdata       = ibm_is_instance.vsishared.primary_network_interface[0].primary_ipv4_address
+  rdata       = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip.address
   ttl         = 3600
 }
 
@@ -79,7 +79,7 @@ output ibm1_public_ip {
 }
 
 output ibm1_private_ip {
-  value = ibm_is_instance.vsishared.primary_network_interface[0].primary_ipv4_address
+  value = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip.address
 }
 
 output ibm1_curl {
