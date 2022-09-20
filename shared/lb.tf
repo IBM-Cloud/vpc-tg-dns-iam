@@ -53,5 +53,5 @@ resource "ibm_is_lb_pool_member" "shared_lb_pool_member" {
   lb             = ibm_is_lb.shared_lb[0].id
   pool           = ibm_is_lb_pool.shared_lb_pool[0].id
   port           = 3000
-  target_address = ibm_is_instance.vsishared.primary_network_interface[0].primary_ipv4_address
+  target_address = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip.address
 }
