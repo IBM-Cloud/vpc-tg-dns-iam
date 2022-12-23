@@ -24,7 +24,7 @@ data ibm_is_image "image" {
 
 module user_data_app {
   source    = "../common/user_data_app"
-  remote_ip = "shared.widgets.com"
+  remote_ip = "shared.widgets.example.com"
 }
 
 locals {

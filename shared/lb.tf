@@ -1,4 +1,4 @@
-# shared.widgets.com
+# shared.widgets.example.com
 resource ibm_dns_resource_record "shared_lb" {
   count       = var.shared_lb ? 1 : 0 # shared load balancer?
   instance_id = local.network_context.dns.guid
