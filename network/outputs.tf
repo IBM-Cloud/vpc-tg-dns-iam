@@ -12,7 +12,7 @@ output shared {
     security_group_outbound_all     = module.sg_shared.security_group_outbound_all
     dns = {
       guid    = ibm_resource_instance.dns.guid
-      zone_id = ibm_dns_zone.widgets_com.zone_id
+      zone_id = ibm_dns_zone.widgets_example_com.zone_id
     }
   }
 }

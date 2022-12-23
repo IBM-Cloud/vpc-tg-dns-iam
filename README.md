@@ -3,7 +3,7 @@ This is the companion github repository for the solution tutorial https://cloud.
 
 This repository: https://github.com/IBM-Cloud/vpc-tg-dns-iam
 
-This tutorial walks you through creating the account resource groups and IAM access groups to organize independent devops teams to develop and maintain applications.  Each devop team administers the VPC instances, VSIs, but not the static network infrastructure like the creation of CIDR blocks and subnets.  The VPCs are connected by Transit Gateways.  The shared devops team has a service **shared.widgets.com** that is put into the DNS service.
+This tutorial walks you through creating the account resource groups and IAM access groups to organize independent devops teams to develop and maintain applications.  Each devop team administers the VPC instances, VSIs, but not the static network infrastructure like the creation of CIDR blocks and subnets.  The VPCs are connected by Transit Gateways.  The shared devops team has a service **shared.widgets.example.com** that is put into the DNS service.
 
 # TLDR;
 There is an apply.sh shell script that will simply perform all of the steps in the tutorial.  There is a destroy.sh shell script that destroys all of the resources.
@@ -96,7 +96,7 @@ curl 169.48.152.220:3000/info; # get the private IP address
 curl 169.48.152.220:3000/remote; # get the remote private IP address
 ```
 
-Try the curl commands suggested.  See something like what was captured below where the private IP address of 169.48.152.220 is 10.1.0.4 and the /remote (shared.widgets.com) is 10.0.0.4.
+Try the curl commands suggested.  See something like what was captured below where the private IP address of 169.48.152.220 is 10.1.0.4 and the /remote (shared.widgets.example.com) is 10.0.0.4.
 
 ```
 $ curl 169.48.152.220:3000/info
@@ -114,7 +114,7 @@ $ curl 169.48.152.220:3000/info
 $ curl 169.48.152.220:3000/remote; # get the remote private IP address
 
 {
-  "remote_url": "http://shared.widgets.com:3000/info",
+  "remote_url": "http://shared.widgets.example.com:3000/info",
   "remote_ip": "10.0.0.4",
   "remote_info": {
      "req_url": "/info",

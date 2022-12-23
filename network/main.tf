@@ -72,8 +72,8 @@ resource "ibm_resource_instance" "dns" {
   plan              = "standard-dns"
 }
 
-resource "ibm_dns_zone" "widgets_com" {
-  name        = "widgets.com"
+resource "ibm_dns_zone" "widgets_example_com" {
+  name        = "widgets.example.com"
   instance_id = ibm_resource_instance.dns.guid
   description = "this is a description"
   label       = "this-is-a-label"
@@ -81,7 +81,7 @@ resource "ibm_dns_zone" "widgets_com" {
 
 resource "ibm_dns_permitted_network" "shared" {
   instance_id = ibm_resource_instance.dns.guid
-  zone_id     = ibm_dns_zone.widgets_com.zone_id
+  zone_id     = ibm_dns_zone.widgets_example_com.zone_id
   vpc_crn     = module.vpc_shared.vpc.crn
   type        = "vpc"
 }
@@ -89,7 +89,7 @@ resource "ibm_dns_permitted_network" "shared" {
 resource "ibm_dns_permitted_network" "application1" {
   depends_on  = [ibm_dns_permitted_network.shared]
   instance_id = ibm_resource_instance.dns.guid
-  zone_id     = ibm_dns_zone.widgets_com.zone_id
+  zone_id     = ibm_dns_zone.widgets_example_com.zone_id
   vpc_crn     = module.vpc_application1.vpc.crn
   type        = "vpc"
 }
@@ -97,7 +97,7 @@ resource "ibm_dns_permitted_network" "application1" {
 resource "ibm_dns_permitted_network" "application2" {
   depends_on  = [ibm_dns_permitted_network.application1]
   instance_id = ibm_resource_instance.dns.guid
-  zone_id     = ibm_dns_zone.widgets_com.zone_id
+  zone_id     = ibm_dns_zone.widgets_example_com.zone_id
   vpc_crn     = module.vpc_application2.vpc.crn
   type        = "vpc"
 }
