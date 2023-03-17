@@ -4,6 +4,7 @@ set -e
 basename='undefined'
 function create_application2_from_application1 {
   (
+    echo '>>> create application 2 from application 1'
     cd application1
     mkdir -p ../application2
     sed -e 's/application1/application2/g' main.tf > ../application2/main.tf
@@ -19,6 +20,7 @@ function initialize_basename_region {
 }
 function admin_local_env {
   (
+    echo '>>> create admin/local.env'
     cd admin
     [ -e local.env ] || echo export TF_VAR_ibmcloud_api_key=$(ibmcloud iam api-key-create $basename-admin --output json | jq .apikey) > local.env
   )
@@ -51,6 +53,7 @@ function test_it {
 }
 function test_local_endpoint {
   (
+    echo '>>> test application1'
     cd application1
     local cmd="$(terraform output -raw test_info)"
     echo can this workstation reach application1 instance? $cmd
@@ -59,6 +62,7 @@ function test_local_endpoint {
 }
 function test_remote_endpoint {
   (
+    echo '>>> test application1'
     cd application1
     local cmd="$(terraform output -raw test_remote)"
     echo can application1 instance reach the shared instance? $cmd
@@ -81,11 +85,13 @@ if ! ibmcloud target -r $ibm_region; then
 fi
 admin_local_env
 (
+  echo '>>> admin/apply'
   cd admin
   terraform_init_apply
 )
 for team in admin network shared application1 application2; do
   (
+  echo ">>> $team/apply"
   cd $team
   team_local_env $team
   terraform_init_apply
@@ -96,6 +102,7 @@ test_local_endpoint
 # turn on transit gateway and build network again
 team=network
 (
+  echo ">>> $team/apply"
   export TF_VAR_transit_gateway=true
   cd $team
   terraform_apply
@@ -105,6 +112,7 @@ test_local_and_remote
 # turn on load balancer and build shared again
 team=shared
 (
+  echo ">>> $team/apply"
   export TF_VAR_shared_lb=true
   cd $team
   terraform_apply

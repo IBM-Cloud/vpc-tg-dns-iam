@@ -1,5 +1,5 @@
 # shared.widgets.example.com
-resource ibm_dns_resource_record "shared_lb" {
+resource "ibm_dns_resource_record" "shared_lb" {
   count       = var.shared_lb ? 1 : 0 # shared load balancer?
   instance_id = local.network_context.dns.guid
   zone_id     = local.network_context.dns.zone_id
@@ -53,5 +53,29 @@ resource "ibm_is_lb_pool_member" "shared_lb_pool_member" {
   lb             = ibm_is_lb.shared_lb[0].id
   pool           = ibm_is_lb_pool.shared_lb_pool[0].id
   port           = 3000
-  target_address = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip.0.address
+  target_address = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip[0].address
+}
+
+output "lb" {
+  value = length(ibm_is_lb.shared_lb) == 0 ? {} : {
+    /*
+    hostname = ibm_is_lb.shared_lb[0].hostname
+    curl     = <<-EOS
+      curl ${ibm_is_lb.shared_lb[0].hostname}:3000
+      curl ${ibm_is_lb.shared_lb[0].hostname}:3000/info
+    EOS
+    */
+    private_ip = [for private_ip in ibm_is_lb.shared_lb[0].private_ip : {
+      address  = private_ip.address
+      curl     = <<-EOS
+        curl ${private_ip.address}:3000
+        curl ${private_ip.address}:3000/info
+      EOS
+      hostname = ibm_is_lb.shared_lb[0].hostname
+      curl2    = <<-EOS
+        curl ${ibm_is_lb.shared_lb[0].hostname}:3000
+        curl ${ibm_is_lb.shared_lb[0].hostname}:3000/info
+      EOS
+    }]
+  }
 }

@@ -1,28 +1,28 @@
-provider ibm {
+provider "ibm" {
   ibmcloud_api_key = var.ibmcloud_api_key
   region           = var.ibm_region
 }
 
-data terraform_remote_state "network" {
+data "terraform_remote_state" "network" {
   backend = "local"
   config = {
     path = "${path.module}/../network/terraform.tfstate"
   }
 }
 
-data ibm_resource_group "shared" {
+data "ibm_resource_group" "shared" {
   name = "${var.basename}-shared"
 }
 
-data ibm_is_ssh_key "ssh_key" {
+data "ibm_is_ssh_key" "ssh_key" {
   name = var.ssh_key_name
 }
 
-data ibm_is_image "image" {
+data "ibm_is_image" "image" {
   name = var.image
 }
 
-module user_data_app {
+module "user_data_app" {
   source    = "../common/user_data_app"
   remote_ip = "REMOTE_IP" # no remote ip
 }
@@ -33,7 +33,7 @@ locals {
   inbound_security_group_data = var.shared_lb ? local.network_context.security_group_data_inbound_from_outbound.id : local.network_context.security_group_data_inbound.id
 }
 
-resource ibm_is_instance "vsishared" {
+resource "ibm_is_instance" "vsishared" {
   name           = "${var.basename}-shared-vsi"
   vpc            = local.network_context.vpc.id
   resource_group = data.ibm_resource_group.shared.id
@@ -57,32 +57,32 @@ resource ibm_is_instance "vsishared" {
 
 #-------------------------------------------------------------------
 # shared.widgets.example.com
-resource ibm_dns_resource_record "shared" {
+resource "ibm_dns_resource_record" "shared" {
   count       = var.shared_lb ? 0 : 1 # shared load balancer?
   instance_id = local.network_context.dns.guid
   zone_id     = local.network_context.dns.zone_id
   type        = "A"
   name        = "shared"
-  rdata       = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip.0.address
+  rdata       = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip[0].address
   ttl         = 3600
 }
 
 #-------------------------------------------------------------------
-resource ibm_is_floating_ip "vsishared" {
+resource "ibm_is_floating_ip" "vsishared" {
   resource_group = data.ibm_resource_group.shared.id
   name           = "${var.basename}-vsishared"
   target         = ibm_is_instance.vsishared.primary_network_interface[0].id
 }
 
-output ibm1_public_ip {
+output "ibm1_public_ip" {
   value = ibm_is_floating_ip.vsishared.address
 }
 
-output ibm1_private_ip {
-  value = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip.0.address
+output "ibm1_private_ip" {
+  value = ibm_is_instance.vsishared.primary_network_interface[0].primary_ip[0].address
 }
 
-output ibm1_curl {
+output "ibm1_curl" {
   value = <<EOS
 
 Verify these do not work:
