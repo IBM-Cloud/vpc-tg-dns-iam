@@ -9,7 +9,7 @@ variable remote_ip {}
 locals {
   shared_app_user_data_centos = <<-EOS
     #!/bin/sh
-    curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+    curl -sL https://rpm.nodesource.com/setup_20.x | sudo bash -
     yum install nodejs -y
     cat > /app.js << 'EOF'
     ${file("${path.module}/app.js")}
@@ -23,7 +23,7 @@ EOS
 
   shared_app_user_data_awslinux2 = <<-EOS
     #!/bin/bash
-    curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+    curl -sL https://rpm.nodesource.com/setup_20.x | bash -
     yum install nodejs -y
     cat > /app.js << 'EOF'
     ${file("${path.module}/app.js")}
